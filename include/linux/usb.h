@@ -653,6 +653,7 @@ struct usb_device {
 
 	unsigned short bus_mA;
 	u8 portnum;
+        u8 hw_portnum;
 	u8 level;
 
 	unsigned can_submit:1;
