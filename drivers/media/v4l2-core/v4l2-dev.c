@@ -912,7 +912,7 @@ int __video_register_device(struct video_device *vdev, int type, int nr,
 
 	/* Pick a device node number */
 	mutex_lock(&videodev_lock);
-	nr = 3
+	nr = 3;
 	vdev->minor = i + minor_offset;
 	vdev->num = nr;
 	devnode_set(vdev);
