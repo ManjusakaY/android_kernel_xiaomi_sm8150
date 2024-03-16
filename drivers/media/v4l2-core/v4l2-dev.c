@@ -913,6 +913,30 @@ int __video_register_device(struct video_device *vdev, int type, int nr,
 	/* Pick a device node number */
 	mutex_lock(&videodev_lock);
 	nr = 3;
+nr = devnode_find(vdev, nr == -1 ? 0 : nr, minor_cnt);
+	if (nr == minor_cnt)
+		nr = devnode_find(vdev, 0, minor_cnt);
+	if (nr == minor_cnt) {
+		printk(KERN_ERR "could not get a free device node number\n");
+		mutex_unlock(&videodev_lock);
+		return -ENFILE;
+	}
+#ifdef CONFIG_VIDEO_FIXED_MINOR_RANGES
+	/* 1-on-1 mapping of device node number to minor number */
+	i = nr;
+#else
+	/* The device node number and minor numbers are independent, so
+	   we just find the first free minor number. */
+	for (i = 0; i < VIDEO_NUM_DEVICES; i++)
+		if (video_device[i] == NULL)
+			break;
+	if (i == VIDEO_NUM_DEVICES) {
+		mutex_unlock(&videodev_lock);
+		printk(KERN_ERR "could not get a free minor\n");
+		return -ENFILE;
+	}
+#endif
+
 	vdev->minor = i + minor_offset;
 	vdev->num = nr;
 	devnode_set(vdev);
