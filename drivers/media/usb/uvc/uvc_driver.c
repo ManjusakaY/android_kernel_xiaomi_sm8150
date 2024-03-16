@@ -1940,7 +1940,8 @@ static int uvc_register_video(struct uvc_device *dev,
 	 * uvc_v4l2_open might race us.
 	 */
 	video_set_drvdata(vdev, stream);
-
+        vdev->hw_portnum = dev->udev->hw_portnum;
+	printk(KERN_ERR"CCCC vdev->hw_portnum=%d\n",vdev->hw_portnum);
 	ret = video_register_device(vdev, VFL_TYPE_GRABBER, -1);
 	if (ret < 0) {
 		uvc_printk(KERN_ERR, "Failed to register video device (%d).\n",
