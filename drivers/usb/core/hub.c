@@ -2237,15 +2237,26 @@ static void show_string(struct usb_device *udev, char *id, char *string)
 
 static void announce_device(struct usb_device *udev)
 {
-	dev_info(&udev->dev, "New USB device found, idVendor=%04x, idProduct=%04x\n",
+	udev->hw_portnum=0;
+       printk(KERN_ERR"kobject_name(&udev->dev->kobj)=%s\n",kobject_name(&(udev->dev.kobj)));
+       if(!strcmp("1-1.1.4",kobject_name(&(udev->dev.kobj)))){
+               udev->hw_portnum=7;
+       }else if(!strcmp("1-1.2.4",kobject_name(&(udev->dev.kobj)))){
+               udev->hw_portnum=8;
+       }
+      printk(KERN_ERR"udev->hw_portnum=%d\n",udev->hw_portnum);
+
+       dev_info(&udev->dev, "AAA  New USB device found, idVendor=%04x, idProduct=%04x\n",
+
 		le16_to_cpu(udev->descriptor.idVendor),
 		le16_to_cpu(udev->descriptor.idProduct));
 	dev_info(&udev->dev,
-		"New USB device strings: Mfr=%d, Product=%d, SerialNumber=%d\n",
+		"AAA New USB device strings: Mfr=%d, Product=%d, SerialNumber=%d\n",
+               
 		udev->descriptor.iManufacturer,
 		udev->descriptor.iProduct,
 		udev->descriptor.iSerialNumber);
-	show_string(udev, "Product", udev->product);
+	show_string(udev, "AAAProduct", udev->product);
 	show_string(udev, "Manufacturer", udev->manufacturer);
 	show_string(udev, "SerialNumber", udev->serial);
 }
@@ -2486,7 +2497,8 @@ int usb_new_device(struct usb_device *udev)
 	err = usb_enumerate_device(udev);	/* Read descriptors */
 	if (err < 0)
 		goto fail;
-	dev_dbg(&udev->dev, "udev %d, busnum %d, minor = %d\n",
+	printk(KERN_ERR "udev %d, busnum %d, minor = %d\n",	
+		
 			udev->devnum, udev->bus->busnum,
 			(((udev->bus->busnum-1) * 128) + (udev->devnum-1)));
 	/* export the usbdev device-node for libusb */
