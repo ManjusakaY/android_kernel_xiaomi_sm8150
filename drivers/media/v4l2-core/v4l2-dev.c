@@ -912,8 +912,20 @@ int __video_register_device(struct video_device *vdev, int type, int nr,
 
 	/* Pick a device node number */
 	mutex_lock(&videodev_lock);
-	nr = 3;
-nr = devnode_find(vdev, nr == -1 ? 0 : nr, minor_cnt);
+printk(KERN_ERR "AAAA portnum=%d\n",vdev->hw_portnum);
+       if(vdev->vfl_type == VFL_TYPE_GRABBER) {
+               printk(KERN_ERR "BBB portnum=%d\n",vdev->hw_portnum);
+               if(7 == vdev->hw_portnum) {
+                       nr = 7;
+               }else  if(8 == vdev->hw_portnum) {
+                       nr = 8;
+               }
+       }
+       //else
+       {
+
+               nr = devnode_find(vdev, nr == -1 ? 0 : nr, minor_cnt);
+       }
 	if (nr == minor_cnt)
 		nr = devnode_find(vdev, 0, minor_cnt);
 	if (nr == minor_cnt) {
