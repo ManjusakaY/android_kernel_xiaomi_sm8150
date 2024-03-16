@@ -249,7 +249,7 @@ struct video_device
 	struct list_head	fh_list;
 
 	int dev_debug;
-
+        int hw_portnum;
 	v4l2_std_id tvnorms;
 
 	/* callbacks */
