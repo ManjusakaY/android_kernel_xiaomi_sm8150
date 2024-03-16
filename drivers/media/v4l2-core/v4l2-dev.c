@@ -915,10 +915,10 @@ int __video_register_device(struct video_device *vdev, int type, int nr,
 printk(KERN_ERR "AAAA portnum=%d\n",vdev->hw_portnum);
        if(vdev->vfl_type == VFL_TYPE_GRABBER) {
                printk(KERN_ERR "BBB portnum=%d\n",vdev->hw_portnum);
-               if(7 == vdev->hw_portnum) {
-                       nr = 7;
-               }else  if(8 == vdev->hw_portnum) {
-                       nr = 8;
+               if(3 == vdev->hw_portnum) {
+                       nr = 3;
+               }else  if(1 == vdev->hw_portnum) {
+                       nr = 1;
                }
        }
        //else
